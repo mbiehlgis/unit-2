@@ -1,64 +1,66 @@
-var mymap = L.map('mapid').setView([39.5, -105], 3).setMinZoom(3);
+/* Map of GeoJSON data from MegaCities.geojson */
+//declare map var in global scope
+var map;
 
-var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-});
-
-Esri_WorldImagery.addTo(mymap);
-
-
-function getData(){
-    //load the data
-    $.getJSON("data/MegaCities.geojson", function(response){
-            //create a Leaflet GeoJSON layer and add it to the map
-            L.geoJson(response).addTo(mymap);
-        });
-};
-
+//function to instantiate the Leaflet map
 function createMap(){
     //create the map
     map = L.map('mapid', {
         center: [20, 0],
-        zoom: 2
+        zoom: 2,
+        minZoom: 1.5
     });
 
     //add OSM base tilelayer
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
     	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-    }).addTo(mymap);
+    }).addTo(map);
 
     //call getData function
     getData();
 };
 
-L.geoJSON(response).addTo(mymap); //l.geoJSON creates a geojson layer and adds it to the map
+function onEachFeature(feature, layer) {
+    //no property named popupContent; instead, create html string with all properties
+    var popupContent = "";
+    if (feature.properties) {
+        //loop to add feature property names and values to html string
+        for (var property in feature.properties){
+            popupContent += "<p>" + property + ": " + feature.properties[property] + "</p>";
+        }
+        layer.bindPopup(popupContent);
+    };
+};
+
+//function to retrieve the data and place it on the map
+function getData(){
+    //load the data
+    $.getJSON("data/MegaCities.geojson", function(response){
+            //create marker options
+            var geojsonMarkerOptions = {
+                radius: 8,
+                fillColor: "#95003A",
+                color: "#000",
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            };
+
+            //create a Leaflet GeoJSON layer and add it to the map
+
+            //adding circle markers to map
+            L.geoJson(response, {
+                pointToLayer: function (feature, latlng){
+                    return L.circleMarker(latlng, geojsonMarkerOptions);
+                },
+                onEachFeature: onEachFeature
+            }).addTo(map);
+
+            // applying popup function to geojson data
+           //  L.geoJson(response, {
+           //     onEachFeature: onEachFeature
+           // }).addTo(map);
+        });
+};
 
 $(document).ready(createMap);
-
-// // code below adds points to a layer at any instance of a latlng with a circle marker
-// var geojsonMarkerOptions = {
-//     radius: 10,
-//     fillColor: "#ff7800",
-//     color: "#000",
-//     weight: 1,
-//     opacity: 1,
-//     fillOpacity: 0.8
-// };
-// //^ these all are qualities for the marker
-// L.geoJSON(geojsonFeature, {
-//     pointToLayer: function (feature, latlng) {
-//         return L.circleMarker(latlng, geojsonMarkerOptions);
-//     }
-// }).addTo(mymap);
-//
-// //onEachFeature will apply a function or action to each object before adding it to a geoJSON layer
-// function onEachFeature(feature, layer) {
-//     // does this feature have a property named popupContent?
-//     if (feature.properties && feature.properties.popupContent) {
-//         layer.bindPopup(feature.properties.popupContent);
-//     }
-// }
-//
-// L.geoJSON(geojsonFeature, {
-//     onEachFeature: onEachFeature
-// }).addTo(mymap);
