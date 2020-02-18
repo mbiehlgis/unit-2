@@ -98,8 +98,10 @@ L.geoJSON(geojsonFeature, {
 
 //onEachFeature will apply a function or action to each object before adding it to a geoJSON layer
 function onEachFeature(feature, layer) {
+	console.log("here");
     // does this feature have a property named popupContent?
     if (feature.properties && feature.properties.popupContent) {
+			console.log("conditional")
         layer.bindPopup(feature.properties.popupContent);
     }
 }
@@ -133,6 +135,6 @@ var someFeatures = [{
 
 L.geoJSON(someFeatures, {
     filter: function(feature, layer) {
-        return feature.properties.show_on_map;
+        return feature.properties.name == "Busch Field";
     }
 }).addTo(mymap);
