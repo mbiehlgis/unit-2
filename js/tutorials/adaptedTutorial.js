@@ -32,34 +32,41 @@ function onEachFeature(feature, layer) {
     };
 };
 
+function drawCities(response){
+    //create marker options
+    var geojsonMarkerOptions = {
+        radius: 8,
+        fillColor: "#95003A",
+        color: "#000",
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.8
+    };
+
+    //create a Leaflet GeoJSON layer and add it to the map
+
+    //adding circle markers to map
+    L.geoJson(response, {
+        pointToLayer: function (feature, latlng){
+            return L.circleMarker(latlng, geojsonMarkerOptions);
+        },
+        onEachFeature: onEachFeature
+    }).addTo(map);
+
+    // applying popup function to geojson data
+    //  L.geoJson(response, {
+    //     onEachFeature: onEachFeature
+    // }).addTo(map);
+
+}
+
 //function to retrieve the data and place it on the map
 function getData(){
     //load the data
     $.getJSON("data/MegaCities.geojson", function(response){
-            //create marker options
-            var geojsonMarkerOptions = {
-                radius: 8,
-                fillColor: "#95003A",
-                color: "#000",
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0.8
-            };
-
-            //create a Leaflet GeoJSON layer and add it to the map
-
-            //adding circle markers to map
-            L.geoJson(response, {
-                pointToLayer: function (feature, latlng){
-                    return L.circleMarker(latlng, geojsonMarkerOptions);
-                },
-                onEachFeature: onEachFeature
-            }).addTo(map);
-
-            // applying popup function to geojson data
-           //  L.geoJson(response, {
-           //     onEachFeature: onEachFeature
-           // }).addTo(map);
+            drawCities(response);
+            createLegend(response);
+            createSequenceUI(response);
         });
 };
 
