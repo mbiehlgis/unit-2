@@ -17,7 +17,7 @@ function getData(){
 
 function createMap(){
     //create the map
-    map = L.map('map', {
+    map = L.map('mapid', {
         center: [20, 0],
         zoom: 2
     });
@@ -31,34 +31,34 @@ function createMap(){
     getData();
 };
 
-L.geoJSON(geojsonFeature).addTo(mymap); //l.geoJSON creates a geojson layer and adds it to the map
+L.geoJSON(response).addTo(mymap); //l.geoJSON creates a geojson layer and adds it to the map
 
 $(document).ready(createMap);
 
-// code below adds points to a layer at any instance of a latlng with a circle marker
-var geojsonMarkerOptions = {
-    radius: 20,
-    fillColor: "#ff7800",
-    color: "#000",
-    weight: 1,
-    opacity: 1,
-    fillOpacity: 0.8
-};
-//^ these all are qualities for the marker
-L.geoJSON(geojsonFeature, {
-    pointToLayer: function (feature, latlng) {
-        return L.circleMarker(latlng, geojsonMarkerOptions);
-    }
-}).addTo(mymap);
-
-//onEachFeature will apply a function or action to each object before adding it to a geoJSON layer
-function onEachFeature(feature, layer) {
-    // does this feature have a property named popupContent?
-    if (feature.properties && feature.properties.popupContent) {
-        layer.bindPopup(feature.properties.popupContent);
-    }
-}
-
-L.geoJSON(geojsonFeature, {
-    onEachFeature: onEachFeature
-}).addTo(mymap);
+// // code below adds points to a layer at any instance of a latlng with a circle marker
+// var geojsonMarkerOptions = {
+//     radius: 10,
+//     fillColor: "#ff7800",
+//     color: "#000",
+//     weight: 1,
+//     opacity: 1,
+//     fillOpacity: 0.8
+// };
+// //^ these all are qualities for the marker
+// L.geoJSON(geojsonFeature, {
+//     pointToLayer: function (feature, latlng) {
+//         return L.circleMarker(latlng, geojsonMarkerOptions);
+//     }
+// }).addTo(mymap);
+//
+// //onEachFeature will apply a function or action to each object before adding it to a geoJSON layer
+// function onEachFeature(feature, layer) {
+//     // does this feature have a property named popupContent?
+//     if (feature.properties && feature.properties.popupContent) {
+//         layer.bindPopup(feature.properties.popupContent);
+//     }
+// }
+//
+// L.geoJSON(geojsonFeature, {
+//     onEachFeature: onEachFeature
+// }).addTo(mymap);
