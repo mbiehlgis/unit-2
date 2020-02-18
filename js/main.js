@@ -6,7 +6,8 @@ function createMap(){
     map = L.map('mapid', {
         center: [36.20, 138.25],
         zoom: 2,
-        minZoom: 4
+        minZoom: 4,
+        maxBounds: [(31.02, 129.4), (45.55, 145.54)]
     });
 
     //add OSM base tilelayer
