@@ -76,7 +76,7 @@ L.geoJSON(states, {
         switch (feature.properties.party) {
             case 'Republican': return {color: "#ff0000"};
             case 'Democrat':   return {color: "#0000ff"};
-        }
+        }//^different cases assigned different colors
     }
 }).addTo(mymap);
 

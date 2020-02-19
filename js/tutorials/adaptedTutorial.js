@@ -57,7 +57,6 @@ function drawCities(response){
     //  L.geoJson(response, {
     //     onEachFeature: onEachFeature
     // }).addTo(map);
-
 }
 
 //function to retrieve the data and place it on the map
@@ -65,8 +64,9 @@ function getData(){
     //load the data
     $.getJSON("data/MegaCities.geojson", function(response){
             drawCities(response);
-            createLegend(response);
-            createSequenceUI(response);
+            //createLegend(response);
+            //createSequenceUI(response);
+            //^potential other  functions to include in getdata call
         });
 };
 
