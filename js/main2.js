@@ -34,17 +34,6 @@ function onEachFeature(feature, layer) {
     };
 };
 
-function calcPropRadius(attValue) {
-    // console.log(attValue);
-     //constant factor adjusts symbol sizes evenly
-     var minRadius = 5;
-
-     //Flannery Appearance Compensation formula
-     var radius = 1.0083 * Math.pow(attValue/minValue,0.5715) * minRadius
-     // console.log(radius)
-     return radius;
-};
-
 function pointToLayer(feature, latlng){
     //creates marker options
     var attribute = "Pop_1980";
@@ -58,22 +47,26 @@ function pointToLayer(feature, latlng){
     };
 
     //create a Leaflet GeoJSON layer and add it to the map
-    var attValue = Number(feature.properties[attribute]);
 
-    geojsonMarkerOptions.radius = calcPropRadius(attValue);
-    console.log(feature);
-    var layer = L.circleMarker(latlng, geojsonMarkerOptions);
-    console.log(layer)
-    var popupContent = "<p><b>Prefecture:</b> " + feature.properties.Prefecture + "</p><p><b>" + attribute + ":</b> " + feature.properties[attribute] + "</p>";
+    L.geoJson(feature, {
+        pointToLayer: function (feature, latlng){
+            console.log(feature.properties)
+            var attValue = Number(feature.properties[attribute]);
 
-    console.log(popupContent);
+            //check if attributes are correct
+            console.log(feature.properties, attValue);
 
-    layer.bindPopup(popupContent);
+            //check here
+            geojsonMarkerOptions.radius = calcPropRadius(attValue);
 
-    return layer;
-};
+            //create circles
+            return L.circleMarker(latlng, geojsonMarkerOptions);
+        },
+        onEachFeature: onEachFeature
+    }).addTo(map);
+}
 
-function createPropSymbols(data){
+function createPropSymbols(data, map){
     L.geoJson(data, {
         pointToLayer: pointToLayer
     }).addTo(map);
@@ -94,6 +87,17 @@ function calcMinValue(data){
     // console.log(minValue);
     return minValue;
 }
+
+function calcPropRadius(attValue) {
+    // console.log(attValue);
+     //constant factor adjusts symbol sizes evenly
+     var minRadius = 5;
+
+     //Flannery Appearance Compensation formula
+     var radius = 1.0083 * Math.pow(attValue/minValue,0.5715) * minRadius
+     // console.log(radius)
+     return radius;
+};
 
 //function to retrieve the data and place it on the map
 function getData(){
