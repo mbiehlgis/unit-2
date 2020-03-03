@@ -27,7 +27,7 @@ layer.bindPopup(popupContent, {
 }
 
 .step {
-	width: 20%;
+	width: 7.5%;
 }
 
 .step img {
@@ -36,7 +36,7 @@ layer.bindPopup(popupContent, {
 
 
 #forward {
-  float: right;
+  float: center;
 }
 
 #reverse {

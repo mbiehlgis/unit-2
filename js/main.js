@@ -24,18 +24,6 @@ function createMap(){
     getData();
 };
 
-// function onEachFeature(feature, layer) {
-//     //no property named popupContent; instead, create html string with all properties
-//     var popupContent = "";
-//     if (feature.properties) {
-//         //loop to add feature property names and values to html string
-//         for (var property in feature.properties){
-//             popupContent += "<p>" + property + ": " + feature.properties[property] + "</p>";
-//         }
-//         layer.bindPopup(popupContent);
-//     };
-// };
-
 function calcPropRadius(attValue) {
     // console.log(attValue);
      //constant factor adjusts symbol sizes evenly
@@ -107,9 +95,24 @@ function calcMinValue(data){
 function createSequenceControls(){
     //create range input element (slider)
     $('#panel').append('<input class="range-slider" type="range">');
+
+    // Ex3.6: set slider attributes
+    $('.range-slider').attr({
+        max: 6,
+        min: 0,
+        value: 0,
+        step: 1
+    });
+    $('.range-slider').on('input', function(){
+        //Step 6: get the new index value
+        var index = $(this).val();
+        console.log(index);
+        updatePropSymbols(attributes[index]);
+    });
     $('#panel').append('<button class="step" id="reverse">Reverse</button>');
-    $('#panel').append('<button class="step" id="forward">Forward</button>')
-    //Below Example 3.6 in createSequenceControls()
+    $('#panel').append('<button class="step" id="forward">Forward</button>');
+    $('#reverse').html('<img src="img/left_arrow.png">');
+    $('#forward').html('<img src="img/right_arrow.png">');
     //Step 5: click listener for buttons
     $('.step').click(function(){
             //get the old index value
@@ -131,9 +134,10 @@ function createSequenceControls(){
 
             //Called in both step button and slider event listener handlers
            //Step 9: pass new attribute to update symbols
-           updatePropSymbols(attributes[index]);
+            updatePropSymbols(attributes[index]);
         });
-        //Step 10: Resize proportional symbols according to new attribute values
+
+//Step 10: Resize proportional symbols according to new attribute values
 function updatePropSymbols(attribute){
     map.eachLayer(function(layer){
         if (layer.feature && layer.feature.properties[attribute]){
@@ -158,7 +162,6 @@ function updatePropSymbols(attribute){
     };
 })};
 };
-
 
 
 function processData(data){
@@ -194,5 +197,20 @@ function getData(){
         });
 };
 
-
 $(document).ready(createMap);
+
+
+
+
+
+// function onEachFeature(feature, layer) {
+//     //no property named popupContent; instead, create html string with all properties
+//     var popupContent = "";
+//     if (feature.properties) {
+//         //loop to add feature property names and values to html string
+//         for (var property in feature.properties){
+//             popupContent += "<p>" + property + ": " + feature.properties[property] + "</p>";
+//         }
+//         layer.bindPopup(popupContent);
+//     };
+// };
