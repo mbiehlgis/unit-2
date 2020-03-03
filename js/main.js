@@ -8,7 +8,7 @@ function createMap(){
         center: [36.20, 138.25],
         zoom: 2,
         minZoom: 5,
-        maxBounds: [(25.2, 125.7), (45.7, 148.54)],
+        maxBounds: [(25.2, 115.7), (45.7, 155.54)],
         pitch: 60,
         bearing: -60
     });//^different optional map parameters
@@ -92,7 +92,7 @@ function calcMinValue(data){
 }
 
 //Step 1: Create new sequence controls
-function createSequenceControls(){
+function createSequenceControls(attributes){
     //create range input element (slider)
     $('#panel').append('<input class="range-slider" type="range">');
 
@@ -134,6 +134,7 @@ function createSequenceControls(){
 
             //Called in both step button and slider event listener handlers
            //Step 9: pass new attribute to update symbols
+           console.log(attributes)
             updatePropSymbols(attributes[index]);
         });
 
@@ -189,11 +190,11 @@ function processData(data){
 function getData(){
     //load the data and call other functions
     $.getJSON("data/JapanPop.geojson", function(response){
-            var attributes = processData(response);
+            var attributes = processData(response); //variable created within this function, I could have also made attributes a global variable at the beginning
             minValue = calcMinValue(response);
             createPropSymbols(response,attributes);
             //createLegend(response);
-            createSequenceControls(response);
+            createSequenceControls(attributes);
         });
 };
 
