@@ -1,8 +1,8 @@
 #mapid {
   position: relative;
-  width: 95vw;
+  width: 97vw;
   height: 80vh;
-  border-color: white;
+  border: 3px solid white;
   border-radius: 10px;
 }
 
@@ -27,18 +27,26 @@ layer.bindPopup(popupContent, {
 }
 
 .range-slider {
-   width: 25%;
-   color: white;
+   width: 20%;
+   background: #262626;
+   height: 50px;
+}
+
+input[type="range"]::-moz-range-progress {
+  background-color: white;
+}
+input[type="range"]::-moz-range-track {
+  background-color: white;
 }
 
 .step {
-	width: 7.5%;
+	width: 5.5%;
   background: #262626;
   border-radius: 10px;
 }
 
 .step img {
-	width: 100%;
+	width: 90%;
   background: #262626;
   border-radius: 10px;
 }
@@ -51,3 +59,18 @@ layer.bindPopup(popupContent, {
 #reverse {
    float: left;
 }
+
+.leaflet-popup-content-wrapper {
+  background: #262626;
+  box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+  border: white
+}
+
+.leaflet-popup-content-wrapper {
+  color: white;
+  font: 13px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+/* body{
+  overflow: hidden;
+} */

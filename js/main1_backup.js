@@ -27,12 +27,42 @@ function createMap(){
 function calcPropRadius(attValue) {
     // console.log(attValue);
      //constant factor adjusts symbol sizes evenly
-     var minRadius = 4.5;
+     var minRadius = 5;
 
      //Flannery Appearance Compensation formula
      var radius = 1.0083 * Math.pow(attValue/minValue,0.5715) * minRadius
      // console.log(radius)
      return radius;
+};
+
+function pointToLayer(feature, latlng, attributes){
+    //creates marker options
+    var attribute = attributes[0];
+    console.log(attribute);
+    var geojsonMarkerOptions = {
+        //radius: 7,
+        fillColor: "#95003A",
+        color: "#000",
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.5
+    };
+
+    //create a Leaflet GeoJSON layer and add it to the map
+    var attValue = Number(feature.properties[attribute]);
+
+    geojsonMarkerOptions.radius = calcPropRadius(attValue);
+
+    var layer = L.circleMarker(latlng, geojsonMarkerOptions);
+
+    var popupContent = "<p><b>Prefecture:</b> " + feature.properties.Prefecture + "</p>";
+
+    var year = attribute.split("_")[1];
+        popupContent += "<p><b>Population in " + year + ":</b> " + feature.properties[attribute] + " million</p>";
+
+    layer.bindPopup(popupContent);
+
+    return layer;
 };
 
 //Example 2.1 line 34...Add circle markers for point features to the map
@@ -122,7 +152,11 @@ function updatePropSymbols(attribute){
             layer.setRadius(radius);
 
             //add city to popup content string
-            var popupContent = createPopupContent(props, attribute);
+            var popupContent = "<p><b>Prefecture:</b> " + props.Prefecture + "</p>";
+
+            //add formatted attribute to panel content string
+            var year = attribute.split("_")[1];
+            popupContent += "<p><b>Population in " + year + ":</b> " + props[attribute] + " million</p>";
 
             //update popup content
             popup = layer.getPopup();
@@ -131,44 +165,6 @@ function updatePropSymbols(attribute){
 })};
 };
 
-function pointToLayer(feature, latlng, attributes){
-    //creates marker options
-    var attribute = attributes[0];
-    console.log(attribute);
-    var geojsonMarkerOptions = {
-        //radius: 7,
-        fillColor: "#95003A",
-        color: "#000",
-        weight: 1,
-        opacity: 1,
-        fillOpacity: 0.5
-    };
-
-    //create a Leaflet GeoJSON layer and add it to the map
-    var attValue = Number(feature.properties[attribute]);
-
-    geojsonMarkerOptions.radius = calcPropRadius(attValue);
-
-    var layer = L.circleMarker(latlng, geojsonMarkerOptions);
-
-    var popupContent = createPopupContent(feature.properties, attribute);
-
-    layer.bindPopup(popupContent, {
-          offset: new L.Point(0, -geojsonMarkerOptions.radius * 0.5)
-       });
-    return layer;
-};
-
-function createPopupContent(properties, attribute){
-    //add city to popup content string
-    var popupContent = "<p><b>Prefecture:</b> " + properties.Prefecture + "</p>";
-
-    //add formatted attribute to panel content string
-    var year = attribute.split("_")[1];
-    popupContent += "<p><b>Population in " + year + ":</b> " + properties[attribute] + " million</p>";
-
-    return popupContent;
-};
 
 function processData(data){
     //empty array to hold attributes
@@ -204,19 +200,3 @@ function getData(){
 };
 
 $(document).ready(createMap);
-
-
-
-
-
-// function onEachFeature(feature, layer) {
-//     //no property named popupContent; instead, create html string with all properties
-//     var popupContent = "";
-//     if (feature.properties) {
-//         //loop to add feature property names and values to html string
-//         for (var property in feature.properties){
-//             popupContent += "<p>" + property + ": " + feature.properties[property] + "</p>";
-//         }
-//         layer.bindPopup(popupContent);
-//     };
-// };
