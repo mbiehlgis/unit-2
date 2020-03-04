@@ -7,7 +7,7 @@ function createMap(){
     map = L.map('mapid', {
         center: [36.20, 138.25],
         zoom: 2,
-        minZoom: 5,
+        minZoom: 4.7,
         maxBounds: [(25.2, 115.7), (45.7, 155.54)],
         pitch: 60,
         bearing: -60
@@ -17,7 +17,7 @@ function createMap(){
     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
     	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
     	subdomains: 'abcd',
-    	maxZoom: 19
+    	maxZoom: 30
     }).addTo(map);
 
     //call getData function
@@ -109,10 +109,10 @@ function createSequenceControls(attributes){
         console.log(index);
         updatePropSymbols(attributes[index]);
     });
-    $('#panel').append('<button class="step" id="reverse">Reverse</button>');
+    $('#panel').append('<button class="step" id="reverse">Reverse</button>');//appending button classes to panel
     $('#panel').append('<button class="step" id="forward">Forward</button>');
-    $('#reverse').html('<img src="img/left_arrow.png">');
-    $('#forward').html('<img src="img/right_arrow.png">');
+    $('#reverse').html('<img src="img/left_arrow.svg">'); // linking each button to the appropriate svg
+    $('#forward').html('<img src="img/right_arrow.svg">');
     //Step 5: click listener for buttons
     $('.step').click(function(){
             //get the old index value
@@ -135,10 +135,11 @@ function createSequenceControls(attributes){
             //Called in both step button and slider event listener handlers
            //Step 9: pass new attribute to update symbols
            console.log(attributes)
-            updatePropSymbols(attributes[index]);
+            updatePropSymbols(attributes[index]); //calling updatePropSymbols function and can only pass in attributes since it was defined in the callback ajax function
         });
 
 //Step 10: Resize proportional symbols according to new attribute values
+// updates prop symbols to be in sync with slider position
 function updatePropSymbols(attribute){
     map.eachLayer(function(layer){
         if (layer.feature && layer.feature.properties[attribute]){
@@ -167,13 +168,13 @@ function updatePropSymbols(attribute){
 
 function processData(data){
     //empty array to hold attributes
-    var attributes = [];
+    var attributes = []; //setting the attributes array to prepare the values needed for the other functions within the getData function
 
     //properties of the first feature in the dataset
     var properties = data.features[0].properties;
 
     //push each attribute name into attributes array
-    for (var attribute in properties){
+    for (var attribute in properties){ // looping through values with an index of "Pop" and pushing them to the array if they have a value greater than 0
         //only take attributes with population values
         if (attribute.indexOf("Pop") > -1){
             attributes.push(attribute);
@@ -183,7 +184,7 @@ function processData(data){
     //check result
     console.log(attributes);
 
-    return attributes;
+    return attributes; //returns attributes array to be used in callback
 };
 
 //function to retrieve the data and place it on the map

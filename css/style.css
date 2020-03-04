@@ -1,6 +1,9 @@
 #mapid {
+  position: relative;
   width: 100vw;
   height: 80vh;
+  border-color: white;
+  border-radius: 10px;
 }
 
 .leaflet-popup-content p {
@@ -13,25 +16,31 @@ layer.bindPopup(popupContent, {
 
 
 #panel {
-   max-width: 25%;
-   padding: 20px;
-   display: inline-block;
-   vertical-align: top;
-   text-align: center;
-   line-height: 42px;
-   overflow: hidden;
+  position: absolute;
+  max-width: 25%;
+  padding: 20px;
+  display: inline-block;
+  vertical-align: top;
+  text-align: center;
+  line-height: 42px;
+  overflow: hidden;
 }
 
 .range-slider {
    width: 25%;
+   color: white;
 }
 
 .step {
 	width: 7.5%;
+  background: #262626;
+  border-radius: 10px;
 }
 
 .step img {
 	width: 100%;
+  background: #262626;
+  border-radius: 10px;
 }
 
 
