@@ -1,5 +1,6 @@
 var map;
 var minValue;
+var attributes = [];
 
 //function to instantiate the Leaflet map
 function createMap(){
@@ -8,6 +9,7 @@ function createMap(){
         center: [36.20, 138.25],
         zoom: 2,
         minZoom: 4.7,
+        maxZoom: 8,
         maxBounds: [(25.2, 115.7), (45.7, 155.54)],
         pitch: 60,
         bearing: -60
@@ -43,6 +45,8 @@ function createPropSymbols(data, attributes){
             return pointToLayer(feature, latlng, attributes);
         }
     }).addTo(map);
+    $('#temporal-legend').html(attributes);
+
 };
 
 function calcMinValue(data){
@@ -63,8 +67,35 @@ function calcMinValue(data){
 
 //Step 1: Create new sequence controls
 function createSequenceControls(attributes){
+////BEGINNING of extend testing //
+    var SequenceControl = L.Control.extend({
+        options: {
+            position: 'bottomleft'
+        },
+
+        onAdd: function () {
+            //// create the control container div with a particular class name
+            var container = L.DomUtil.create('div', 'sequence-control-container');
+
+            //// ... initialize other DOM elements
+            $(container).append('<input class="range-slider" type="range">');
+
+            $(container).append('<button class="step" id="reverse">Reverse</button>');//appending button classes to panel
+            $(container).append('<button class="step" id="forward">Forward</button>');
+
+            L.DomEvent.disableClickPropagation(container);
+
+            return container;
+        }
+    });
+
+    map.addControl(new SequenceControl());
+
+    //// add listeners after adding control
+////END of extend testing
+
     //create range input element (slider)
-    $('#panel').append('<input class="range-slider" type="range">');
+    //$('#panel').append('<input class="range-slider" type="range">');
 
     // Ex3.6: set slider attributes
     $('.range-slider').attr({
@@ -76,11 +107,11 @@ function createSequenceControls(attributes){
     $('.range-slider').on('input', function(){
         //Step 6: get the new index value
         var index = $(this).val();
-        console.log(index);
+        //console.log(index);
         updatePropSymbols(attributes[index]);
     });
-    $('#panel').append('<button class="step" id="reverse">Reverse</button>');//appending button classes to panel
-    $('#panel').append('<button class="step" id="forward">Forward</button>');
+    //$('#panel').append('<button class="step" id="reverse">Reverse</button>');//appending button classes to panel
+    //$('#panel').append('<button class="step" id="forward">Forward</button>');
     $('#reverse').html('<img src="img/left_arrow.svg">'); // linking each button to the appropriate svg
     $('#forward').html('<img src="img/right_arrow.svg">');
     //Step 5: click listener for buttons
@@ -104,9 +135,9 @@ function createSequenceControls(attributes){
 
             //Called in both step button and slider event listener handlers
            //Step 9: pass new attribute to update symbols
-           console.log(attributes)
+           //console.log(attributes)
             updatePropSymbols(attributes[index]); //calling updatePropSymbols function and can only pass in attributes since it was defined in the callback ajax function
-        });
+  });
 
 //Step 10: Resize proportional symbols according to new attribute values
 // updates prop symbols to be in sync with slider position
@@ -128,13 +159,16 @@ function updatePropSymbols(attribute){
             popup = layer.getPopup();
             popup.setContent(popupContent).update();
     };
+    $('#temporal-legend').html(attribute);
+
 })};
+    // updateLegend(attributes);
 };
 
 function pointToLayer(feature, latlng, attributes){
     //creates marker options
     var attribute = attributes[0];
-    console.log(attribute);
+    //console.log(attribute);
     var geojsonMarkerOptions = {
         //radius: 7,
         fillColor: "#95003A",
@@ -165,14 +199,46 @@ function createPopupContent(properties, attribute){
 
     //add formatted attribute to panel content string
     var year = attribute.split("_")[1];
+    console.log(year) //logs each year as I click steps
     popupContent += "<p><b>Population in " + year + ":</b> " + properties[attribute] + " million</p>";
 
     return popupContent;
 };
 
+function createLegend(attributes){
+    var legendControl = L.Control.extend({
+        options: {
+            position: 'bottomright'
+        },
+
+        onAdd: function () {
+            // create the control container with a particular class name
+            var container = L.DomUtil.create('div', 'legend-control-container');
+
+            //$(container).append('<p style="color: white; font-size: 16px" >Japan Population Over Time</p>');
+
+            $(container).append('<div id="temporal-legend">');
+
+            L.DomEvent.disableClickPropagation(container);
+
+            return container;
+        }
+    });
+
+    map.addControl(new legendControl());
+
+    //updateLegend(attributes[0]);
+};
+
+// function updateLegend(attributes){
+//     var year = attributes.toString().split(",Pop");
+//     console.log(year)
+//     $('#temporal-legend').html(year);
+// }
+
 function processData(data){
     //empty array to hold attributes
-    var attributes = []; //setting the attributes array to prepare the values needed for the other functions within the getData function
+    //var attributes = []; //setting the attributes array to prepare the values needed for the other functions within the getData function
 
     //properties of the first feature in the dataset
     var properties = data.features[0].properties;
@@ -186,7 +252,7 @@ function processData(data){
     };
 
     //check result
-    console.log(attributes);
+    //console.log(attributes);
 
     return attributes; //returns attributes array to be used in callback
 };
@@ -198,7 +264,7 @@ function getData(){
             var attributes = processData(response); //variable created within this function, I could have also made attributes a global variable at the beginning
             minValue = calcMinValue(response);
             createPropSymbols(response,attributes);
-            //createLegend(response);
+            createLegend(attributes);
             createSequenceControls(attributes);
         });
 };
