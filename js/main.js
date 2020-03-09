@@ -1,6 +1,6 @@
 var map;
 var minValue;
-var attributes = [];
+var attributes = []; //making a global attribute variable with an empty array
 
 //function to instantiate the Leaflet map
 function createMap(){
@@ -8,11 +8,9 @@ function createMap(){
     map = L.map('mapid', {
         center: [36.20, 138.25],
         zoom: 2,
-        minZoom: 4.7,
+        minZoom: 4.4,
         maxZoom: 8,
         maxBounds: [(25.2, 115.7), (45.7, 155.54)],
-        pitch: 60,
-        bearing: -60
     });//^different optional map parameters
 
     //add OSM base tilelayer
@@ -46,7 +44,6 @@ function createPropSymbols(data, attributes){
         }
     }).addTo(map);
     $('#temporal-legend').html(attributes);
-
 };
 
 function calcMinValue(data){
@@ -200,7 +197,7 @@ function createPopupContent(properties, attribute){
     //add formatted attribute to panel content string
     var year = attribute.split("_")[1];
     console.log(year) //logs each year as I click steps
-    popupContent += "<p><b>Population in " + year + ":</b> " + properties[attribute] + " million</p>";
+    popupContent += "<p><b>Population in " + year + ":</b> " + properties[attribute] + " people</p>";
 
     return popupContent;
 };
@@ -215,9 +212,11 @@ function createLegend(attributes){
             // create the control container with a particular class name
             var container = L.DomUtil.create('div', 'legend-control-container');
 
-            //$(container).append('<p style="color: white; font-size: 16px" >Japan Population Over Time</p>');
+                  $(container).append('<div id="temporal-legend">');
 
-            $(container).append('<div id="temporal-legend">');
+            var svg = '<svg id="attribute-legend" width="50px" height="50px">';
+
+            $(container).append(svg);
 
             L.DomEvent.disableClickPropagation(container);
 
@@ -268,6 +267,27 @@ function getData(){
             createSequenceControls(attributes);
         });
 };
+
+
+// ---- back to top button ----
+mybutton = document.getElementById("myBtn");
+
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    mybutton.style.display = "block";
+  } else {
+    mybutton.style.display = "none";
+  }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+  document.body.scrollTop = 0; // For Safari
+  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+}
 
 $(document).ready(createMap);
 
