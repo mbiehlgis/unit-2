@@ -43,7 +43,6 @@ function createPropSymbols(data, attributes){
             return pointToLayer(feature, latlng, attributes);
         }
     }).addTo(map);
-    $('#temporal-legend').html(attributes);
 };
 
 function calcMinValue(data){
@@ -156,7 +155,10 @@ function updatePropSymbols(attribute){
             popup = layer.getPopup();
             popup.setContent(popupContent).update();
     };
-    $('#temporal-legend').html(attribute);
+    console.log(attribute)
+
+    var year = attribute.split("_")[1];
+    $('span.year').html(year);
 
 })};
     // updateLegend(attributes);
@@ -196,7 +198,7 @@ function createPopupContent(properties, attribute){
 
     //add formatted attribute to panel content string
     var year = attribute.split("_")[1];
-    console.log(year) //logs each year as I click steps
+    // console.log(year) //logs each year as I click steps
     popupContent += "<p><b>Population in " + year + ":</b> " + properties[attribute] + " people</p>";
 
     return popupContent;
@@ -212,7 +214,7 @@ function createLegend(attributes){
             // create the control container with a particular class name
             var container = L.DomUtil.create('div', 'legend-control-container');
 
-                  $(container).append('<div id="temporal-legend">');
+                  $(container).append('<div id="temporal-legend">Population in <span class="year">1980</span></div>');
 
             var svg = '<svg id="attribute-legend" width="50px" height="50px">';
 

@@ -1,53 +1,67 @@
 /* -------- Info Text -------- */
+
 .intro {
   background-color: #2B2D2F;
   border: 3px solid white;
   height: 75px;
   border-radius: 10px;
   margin: auto;
-  width: 700px;
+  width: 900px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom: 0;
 }
 
 h1 {
   color: white;
   font-size: 16pt;
-  font: "Helvetica Neue";
+  font-family: "Palatino";
   text-align: center;
 }
 
 h2 {
   color: white;
   font-size: 12pt;
-  font: "Helvetica Neue";
+  font-family: "Palatino";
   text-align: center;
 }
 
-.footer p {
-  position: fixed;
-  text-align: center;
-  bottom: 5px;
-  width: 100%;
+.mainContainer {
+  overflow: hidden;
 }
 
 .body-text {
-  width: 37vw;
+  max-width: 100%;
   height: 80vh;
+  flex: 100%;
   border: 3px solid white;
   border-radius: 10px;
   background-color: #2B2D2F;
-  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding-right: 17px;
+  margin-right: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none
+}
+
+/* Hidden Scroll for Chrome/Safari */
+.body-text::-webkit-scrollbar {
+  display: none;
 }
 
 .body-text h3 {
   color: white;
-  font: Helvetica;
+  font-family: "Palatino";
   padding-left: 10px;
   top: 5px;
 }
 
 .body-text p {
   color: white;
-  font: Helvetica;
+  font-family: "Helvetica";
   padding-left: 10px;
   top: 5px;
 }
@@ -56,6 +70,13 @@ h2 {
   border-radius: 10px;
   border-color: white;
   border-width: 3px;
+}
+
+.footer p {
+  position: fixed;
+  text-align: center;
+  bottom: 5px;
+  width: 100%;
 }
 
 /* ---- Back to Top Button ---- */
@@ -83,11 +104,15 @@ h2 {
 #mapid {
   position: relative;
   float: right;
-  width: 60vw;
+  flex: 66%;
+  width: 66%;
   height: 80vh;
   border: 3px solid white;
   border-radius: 10px;
-
+  margin-left: 0;
+  padding-left: 0;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 /* -------- Pop-ups -------- */
@@ -162,11 +187,11 @@ input[type="range"]::-moz-range-track {
   font: 13px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
-#temporal-legend {
+.legend-control-container {
 	font: "Helvetica Neue";
   text-align: center;
 	font-weight: bold;
-	font-size: 15pt;
+	font-size: 12pt;
 	background: #95003A;
   color: white;
   width: 10vw;
