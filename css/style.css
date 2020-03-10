@@ -1,5 +1,52 @@
-/* -------- Info Text -------- */
+/* ------ Testing Responsive Mobile Design ------ */
+@media screen and (max-width: 768px) {
+  .intro {
+    background-color: #2B2D2F !important; /*test line*/
+    width: 300px !important;
+    border-bottom: 10px !important;
+    border-bottom: 10px !important;
+  }
+  h1 {
+    font-size: 14pt !important;
+  }
+  h2 {
+    font-size: 9pt !important;
+    opacity: 50% !important;
+  }
+  .mainContainer {
+    overflow: visible !important;
+  }
+  #mapid {
+    height: 500px !important;
+    float: left !important;
+    width: 90% !important;
+    border: 3px solid white !important;
+    border-radius: 0px !important;
+    /* padding-left: 50px !important; */
+  }
+  .body-text {
+    float: left !important;
+    width: 90% !important;
+    border: 3px solid white !important;
+    border-radius: 0px !important;
+    /* padding-right: 50px !important; */
+  }
+  .VidsPics {
+    width: 400px !important;
+  }
+  .legend-control-container {
+    width: 200px !important;
+    height: 90px !important;
+  }
+  .leaflet-top.leaflet-left,
+  .leaflet-control-zoom.leaflet-bar.leaflet-control {
+    right:0 !important;
+    margin-right: 10px !important;
+  }
+}
+/* ------ End Test ------ */
 
+/* -------- Info Text -------- */
 .intro {
   background-color: #2B2D2F;
   border: 3px solid white;
@@ -77,6 +124,8 @@ h2 {
   text-align: center;
   bottom: 5px;
   width: 100%;
+  color: white;
+  font-size: 8px
 }
 
 /* ---- Back to Top Button ---- */
@@ -187,6 +236,8 @@ input[type="range"]::-moz-range-track {
   font: 13px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
+
+/* ------ Legend ------ */
 .legend-control-container {
 	font: "Helvetica Neue";
   text-align: center;
