@@ -1,17 +1,16 @@
 /* ------ Testing Responsive Mobile Design ------ */
 @media screen and (max-width: 768px) {
   .intro {
-    background-color: #2B2D2F !important; /*test line*/
     width: 300px !important;
     border-bottom: 10px !important;
     border-bottom: 10px !important;
   }
   h1 {
     font-size: 14pt !important;
+    letter-spacing: normal !important;
   }
   h2 {
     font-size: 9pt !important;
-    opacity: 50% !important;
   }
   .mainContainer {
     overflow: visible !important;
@@ -20,15 +19,17 @@
     height: 500px !important;
     float: left !important;
     width: 90% !important;
-    border: 3px solid white !important;
-    border-radius: 0px !important;
+    border: 3px solid #3EBCEF !important;
+    border-top-left-radius: 10px !important;
+    border-top-right-radius: 10px !important;
     /* padding-left: 50px !important; */
   }
   .body-text {
     float: left !important;
     width: 90% !important;
-    border: 3px solid white !important;
-    border-radius: 0px !important;
+    border: 3px solid #3EBCEF !important;
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
     /* padding-right: 50px !important; */
   }
   .VidsPics {
@@ -43,12 +44,17 @@
     right:0 !important;
     margin-right: 10px !important;
   }
+  .footer {
+    position: fixed !important;
+    bottom: 0px !important;
+  }
 }
+
 /* ------ End Test ------ */
 
-/* -------- Info Text -------- */
+                    /* -------- Header Text -------- */
 .intro {
-  background-color: #2B2D2F;
+  background-color: #E0E0E0;
   border: 3px solid white;
   height: 75px;
   border-radius: 10px;
@@ -60,19 +66,22 @@
 }
 
 h1 {
-  color: white;
+  color: black;
   font-size: 16pt;
   font-family: "Palatino";
   text-align: center;
+  letter-spacing: 5px;
 }
 
 h2 {
-  color: white;
+  color: black;
   font-size: 12pt;
   font-family: "Palatino";
   text-align: center;
+  letter-spacing: 3px;
 }
 
+                /* ------ Main Div ------ */
 .mainContainer {
   overflow: hidden;
 }
@@ -83,7 +92,7 @@ h2 {
   flex: 100%;
   border: 3px solid white;
   border-radius: 10px;
-  background-color: #2B2D2F;
+  background-color: #E0E0E0;
   overflow-x: hidden;
   overflow-y: scroll;
   padding-right: 17px;
@@ -100,14 +109,16 @@ h2 {
 }
 
 .body-text h3 {
-  color: white;
+  /* color: #95003A; */
+  color: black;
   font-family: "Palatino";
   padding-left: 10px;
   top: 5px;
 }
 
 .body-text p {
-  color: white;
+  /* color: #95003A; */
+  color: black;
   font-family: "Helvetica";
   padding-left: 10px;
   top: 5px;
@@ -115,12 +126,13 @@ h2 {
 
 .VidsPics {
   border-radius: 10px;
-  border-color: white;
+  border-color: #95003A;
   border-width: 3px;
+
 }
 
 .footer p {
-  position: fixed;
+  position: relative;
   text-align: center;
   bottom: 5px;
   width: 100%;
@@ -128,28 +140,7 @@ h2 {
   font-size: 8px
 }
 
-/* ---- Back to Top Button ---- */
-#myBtn {
- display: none; /* Hidden by default */
- position: fixed; /* Fixed/sticky position */
- bottom: 20px; /* Place the button at the bottom of the page */
- right: 30px; /* Place the button 30px from the right */
- z-index: 99; /* Make sure it does not overlap */
- border: none; /* Remove borders */
- outline: none; /* Remove outline */
- background-color: red; /* Set a background color */
- color: white; /* Text color */
- cursor: pointer; /* Add a mouse pointer on hover */
- padding: 15px; /* Some padding */
- border-radius: 10px; /* Rounded corners */
- font-size: 18px; /* Increase font size */
-}
-
-#myBtn:hover {
- background-color: #555; /* Add a dark-grey background on hover */
-}
-
-/* -------- Map -------- */
+            /* -------- Map -------- */
 #mapid {
   position: relative;
   float: right;
@@ -164,7 +155,7 @@ h2 {
   border-bottom-left-radius: 0;
 }
 
-/* -------- Pop-ups -------- */
+    /* -------- Pop-ups -------- */
 .leaflet-popup-content p {
     margin: 0.2em 0;
 }
@@ -173,6 +164,8 @@ layer.bindPopup(popupContent, {
        offset: new L.Point(0,-options.radius)
    });
 
+
+/* ------- Slider ------ */
 #panel {
   position: absolute;
   max-width: 25%;
@@ -186,9 +179,9 @@ layer.bindPopup(popupContent, {
 
 .range-slider {
    width: 100%;
-   background: #95003A;
+   background: #FF69B4;
    height: 50px;
-   opacity: 60%;
+   opacity: 75%;
    border-radius: 10px;
    border-color: white;
 }
@@ -203,14 +196,15 @@ input[type="range"]::-moz-range-track {
 
 .step {
 	width: 40%;
-  background: #95003A;
+  /* background: #95003A; deep red color */
+  background: #FF69B4;
   border-radius: 10px;
-  opacity: 60%;
+  opacity: 75%;
 }
 
 .step img {
 	width: 40%;
-  background: #95003A;
+  background: #FF69B4;
   border-radius: 10px;
   /* opacity: 50%; */
 }
@@ -237,18 +231,29 @@ input[type="range"]::-moz-range-track {
 }
 
 
-/* ------ Legend ------ */
+                  /* ------ Legend ------ */
 .legend-control-container {
 	font: "Helvetica Neue";
   text-align: center;
 	font-weight: bold;
 	font-size: 12pt;
-	background: #95003A;
+	background: #FF69B4;
   color: white;
   width: 10vw;
   height: 20vh;
-  opacity: 50%;
+  opacity: 75%;
   border-radius: 10%;
+}
+
+.leaflet-control-zoom.leaflet-bar.leaflet-control,
+.leaflet-touch.leaflet-bar {
+  padding-top: 300px;
+  border: 0px;
+}
+
+.leaflet-touch.leaflet-control-layers,
+.leaflet-touch.leaflet-bar {
+  padding-top: 300px;
 }
 
 /* body{
