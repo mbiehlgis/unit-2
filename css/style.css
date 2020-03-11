@@ -18,8 +18,8 @@
   #mapid {
     height: 400px !important;
     float: left !important;
-    width: 90% !important;
-    flex: 90% !important;
+    width: 98% !important;
+    flex: 98% !important;
     border: 3px solid #3EBCEF !important;
     border-top-left-radius: 10px !important;
     border-top-right-radius: 10px !important;
@@ -28,8 +28,8 @@
   }
   .body-text {
     float: left !important;
-    width: 90% !important;
-    flex: 90% !important;
+    width: 98% !important;
+    flex: 98% !important;
     border: 3px solid #3EBCEF !important;
     border-top-left-radius: 0px !important;
     border-top-right-radius: 0px !important;
