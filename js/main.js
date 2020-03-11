@@ -85,13 +85,16 @@ function calcStats(data){
     return minValue;
 }
 
+// function to create sequence controls
 function createSequenceControls(attributes){
 
+    //variable to set container for sequences in bottom left using L.
     var SequenceControl = L.Control.extend({
         options: {
             position: 'bottomleft'
         },
 
+        // creating divs and naming classes for slider and buttons in the container
         onAdd: function () {
 
             var container = L.DomUtil.create('div', 'sequence-control-container');
@@ -101,14 +104,18 @@ function createSequenceControls(attributes){
             $(container).append('<button class="step" id="reverse">Reverse</button>');
             $(container).append('<button class="step" id="forward">Forward</button>');
 
+            //disabling clicks on container from affecting map
             L.DomEvent.disableClickPropagation(container);
 
+            //returning the sequence container
             return container;
         }
     });
 
+    // adding new controls to the map
     map.addControl(new SequenceControl());
 
+    //setting slider parameters
     $('.range-slider').attr({
         max: 6,
         min: 0,
@@ -128,10 +135,12 @@ function createSequenceControls(attributes){
     $('#reverse').html('<img src="img/left_arrow.svg">'); // linking each button to the appropriate svg
     $('#forward').html('<img src="img/right_arrow.svg">');
 
+    //function to move slider forward upon user click
     $('.step').click(function(){
 
             var index = $('.range-slider').val();
 
+            //if statements to determine whether to move forward or back depending on what was clicked
             if ($(this).attr('id') == 'forward'){
                 index++;
 
