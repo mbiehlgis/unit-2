@@ -3,10 +3,9 @@ var minValue;
 var attributes = []; //making a global attribute variable with an empty array
 var dataStats = {}; //making a global variable list to append max, mean, and min values to
 
-//function to instantiate the Leaflet map
 function createMap(){
-
-    map = L.map('mapid', {
+    // create map and set parameters
+     map = L.map('mapid', {
         center: [36.20, 136.25],
         zoom: 2,
         minZoom: 5,
@@ -14,6 +13,7 @@ function createMap(){
         maxBounds: [(25.2, 115.7), (45.7, 155.54)],
     });
 
+                                          //Potential Dark Mode Map//
     // L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
     // 	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
     // 	subdomains: 'abcd',
@@ -26,7 +26,11 @@ function createMap(){
 	    maxZoom: 30,
 	    attribution: 'Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
+
+    //adds zoom controls to map and sets it position, I set to be in the top right but added padding for it to be in the bottom left but above my legend
     map.zoomControl.setPosition('topright');
+
+    //calls get data function
     getData();
 };
 
@@ -41,7 +45,7 @@ function calcPropRadius(attValue) {
      return radius;
 };
 
-
+//calculate radius for each proportional symbol on map
 function createPropSymbols(data, attributes){
 
     L.geoJson(data, {
@@ -56,8 +60,10 @@ function createPropSymbols(data, attributes){
 
 function calcStats(data){
 
-    var allValues = []; //create empty array to store values in
+    // create empty array to store values in
+    var allValues = [];
 
+    // for loop to loop through table and push year values to the empty array above
     for(var prefecture of data.features){
 
         for(var year = 1980; year <= 2010; year += 5){
@@ -111,9 +117,9 @@ function createSequenceControls(attributes){
     });
 
     $('.range-slider').on('input', function(){
-        //Step 6: get the new index value
+
         var index = $(this).val();
-        //console.log(index);
+
         updatePropSymbols(attributes[index]);
     });
 
@@ -126,24 +132,21 @@ function createSequenceControls(attributes){
 
             var index = $('.range-slider').val();
 
-            //Step 6: increment or decrement depending on button clicked
             if ($(this).attr('id') == 'forward'){
                 index++;
-                //Step 7: if past the last attribute, wrap around to first attribute
+
                 index = index > 6 ? 0 : index;
             } else if ($(this).attr('id') == 'reverse'){
                 index--;
-                //Step 7: if past the first attribute, wrap around to last attribute
+
                 index = index < 0 ? 6 : index;
             };
 
-            //Step 8: update slider
             $('.range-slider').val(index);
 
             updatePropSymbols(attributes[index]); //calling updatePropSymbols function and can only pass in attributes since it was defined in the callback ajax function
   });
 
-//Step 10: Resize proportional symbols according to new attribute values
 // updates prop symbols to be in sync with slider position
 function updatePropSymbols(attribute){
 
@@ -171,13 +174,15 @@ function updatePropSymbols(attribute){
     $('span.year').html(year);
 
 })};
-    // updateLegend(attributes);
+
 };
 
+//convert points to circles in layer
 function pointToLayer(feature, latlng, attributes){
     //creates marker options
     var attribute = attributes[0];
 
+    // styling for the circles which are pink with white borders
     var geojsonMarkerOptions = {
         fillColor: "#FF69B4",
         color: "white",
@@ -186,55 +191,78 @@ function pointToLayer(feature, latlng, attributes){
         fillOpacity: 0.5,
     };
 
-    //create a Leaflet GeoJSON layer and add it to the map
+    //creating a variable that will be used to assign the attribute value for each feature
+    // the attribute is the population per prefecture
     var attValue = Number(feature.properties[attribute]);
 
+    //each circle will now have a radius based on its attribute value (population)
     geojsonMarkerOptions.radius = calcPropRadius(attValue);
 
+    //variable to return the circle marker layer
     var layer = L.circleMarker(latlng, geojsonMarkerOptions);
 
+    // variable to hold popup content values
     var popupContent = createPopupContent(feature.properties, attribute);
 
+    //bind popup to each circle
     layer.bindPopup(popupContent, {
+          //offset so that popup doesn't cover up circle
           offset: new L.Point(0, -geojsonMarkerOptions.radius * 0.5)
        });
+
+    //returns layer with circle markers
     return layer;
 };
 
+//function to create content to be shown in popups
 function createPopupContent(properties, attribute){
 
+    // variable is equal to a string and the property in the data that relates to it
     var popupContent = "<p><b>Prefecture:</b> " + properties.Prefecture + "</p>";
 
-    //add formatted attribute to panel content string
+    // variable to get year columns, split at the underscore to just have the numbers
     var year = attribute.split("_")[1];
 
+    // appending string with year variable and population attribute to the popupcontent variable
     popupContent += "<p><b>Population in " + year + ":</b> " + properties[attribute] + " people</p>";
 
+    //returns the variable
     return popupContent;
 };
 
+//legend for temporal and attributes
 function createLegend(attributes){
 
+    //adds a control panel to the bottom right of the map, control is a leaflet default to add things on map itself
     var legendControl = L.Control.extend({
         options: {
             position: 'bottomright'
         },
 
+
         onAdd: function () {
-            // create the control container with a particular class name
+            // create the control container with 'legend-control-container' as the class name
             var container = L.DomUtil.create('div', 'legend-control-container');
 
+                //appends temporal legend div to the container above
+                //the string in the div element is a default value when opening the map that displays the first year
                 $(container).append('<div id="temporal-legend">Population in <span class="year">1980</span></div>');
 
-            var svg = '<svg id="attribute-legend" width="160px" height="60px">';
+            // creating the attribute legend
+            // using an svg tag with an id of 'attribute-legend'
+            var svg = '<svg id="attribute-legend" width="160px" height="65px">';
 
+            // variable equal to an array holding the values I intend to have on legend
             var circles = ["max", "mean", "min"];
 
+            // for loop to append each circle and text to the svg tag
             for (var i=0; i<circles.length; i++){
 
+                // variable containing the max, mean, and min variables created with the dataStats function
                 var radius = calcPropRadius(dataStats[circles[i]]);
-                console.log(radius);
+                console.log(radius);// log to show me the actual values of my legend as a check
 
+                //variable to change the center y coordinate in order to nest the circes by subtracting their radii
                 var cy = 59 - radius
 
                 svg += '<circle class="legend-circle" id="' + circles[i] + '" r="'+radius+'" fill="#FF69B4" fill-opacity="0.8" stroke="white" cx="30" cy="'+cy+'"/>'
@@ -247,27 +275,31 @@ function createLegend(attributes){
 
             svg += "</svg>";
 
+            //append the svg to the container
             $(container).append(svg);
 
+            //disables the legend from having clicks that would affect the map view
             L.DomEvent.disableClickPropagation(container);
 
             return container;
         }
     });
 
+    //adding controls to the map
     map.addControl(new legendControl());
 
-    //updateLegend(attributes[0]);
 };
 
+//function to fill the global attribute arrau variable at top of page
 function processData(data){
 
+    //variable to store the first feature in the data
     var properties = data.features[0].properties;
 
-    //push each attribute name into global attributes array
+    //for loop to push each attribute name into array
     for (var attribute in properties){ // looping through values with an index of "Pop" and pushing them to the array if they have a value greater than 0
-        //only take attributes with population values
 
+        //indexOf will only allow attributes with population values to be pushed
         if (attribute.indexOf("Pop") > -1){
             attributes.push(attribute);
 
@@ -277,32 +309,29 @@ function processData(data){
     return attributes; //returns attributes array to be used in callback
 };
 
-//function to retrieve the data and place it on the map
+//function to retrieve the data from geojson
 function getData(map){
     //load the data and call other functions
     $.getJSON("data/JapanPop.geojson", function(response){
+
+            //creates attribute array from processData function return
             var attributes = processData(response); //variable created within this function, I could have also made attributes a global variable at the beginning
+
             minValue = calcStats(response);
+
             calcStats(response);
+
             createPropSymbols(response,attributes);
+
             createLegend(attributes);
+
             createSequenceControls(attributes);
+
             calcStats(response);
+
         });
+
 };
 
+//Loads map when all functions run and are ready for display
 $(document).ready(createMap);
-
-
-
-
-//var circleString = `<circle class="legend-circle" id="${circles[i]}" fill="#fff" fill-opacity="0.8" stroke="#000" cx="30" cy="${cy}"`;
-
-//       'cx="30" cy="50"/>'
-//
-//       'cx=30 cy="' + cy + '"/>'
-//
-//       `cx="30" cy="${cy}"`
-//       var dogName = "Blaze";
-//       var alertText = "My dog's name is " + dogName " and I like him a lot.";
-//       var secondWay = `My dog's name is ${10/2} and I like him a lot`;

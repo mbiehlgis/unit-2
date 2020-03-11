@@ -102,7 +102,7 @@ h2 {
   margin-right: 0;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
-  scrollbar-width: none;
+  scrollbar-width: .3;
   -ms-overflow-style: none
 }
 
@@ -250,7 +250,7 @@ input[type="range"]::-moz-range-track {
 	background: #FF69B4;
   color: white;
   width: 15vw;
-  height: 13vh;
+  height: 14vh;
   opacity: 75%;
   border-radius: 10%;
 }
@@ -262,10 +262,16 @@ input[type="range"]::-moz-range-track {
   color: white !important;
 }
 
+#max-text,
+#mean-text,
+#min-text {
+  color: white !important;
+}
+
                   /* ------ Zoom ------ */
 .leaflet-control-zoom.leaflet-bar.leaflet-control,
 .leaflet-touch.leaflet-bar {
-  padding-top: 350px;
+  padding-top: 340px;
   border: 1px;
 }
 
