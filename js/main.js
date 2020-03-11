@@ -180,10 +180,10 @@ function pointToLayer(feature, latlng, attributes){
 
     var geojsonMarkerOptions = {
         fillColor: "#FF69B4",
-        color: "#000",
+        color: "white",
         weight: 1,
         opacity: 1,
-        fillOpacity: 0.5
+        fillOpacity: 0.5,
     };
 
     //create a Leaflet GeoJSON layer and add it to the map
@@ -227,20 +227,26 @@ function createLegend(attributes){
                 $(container).append('<div id="temporal-legend">Population in <span class="year">1980</span></div>');
 
             var svg = '<svg id="attribute-legend" width="160px" height="60px">';
-//STARTED WORK HERE//
+
             var circles = ["max", "mean", "min"];
 
             for (var i=0; i<circles.length; i++){
 
                 var radius = calcPropRadius(dataStats[circles[i]]);
+                console.log(radius);
 
                 var cy = 59 - radius
 
-                svg += '<circle class="legend-circle" id="' + circles[i] + '" fill="#F47821" fill-opacity="0.8" stroke="#000000" cx="30"/>'
+                svg += '<circle class="legend-circle" id="' + circles[i] + '" r="'+radius+'" fill="#FF69B4" fill-opacity="0.8" stroke="white" cx="30" cy="'+cy+'"/>'
+
+                var textY = i * 20 + 20;
+
+                svg += '<text id="' + circles[i] + '-text" color="white" x="65" y="' + textY + '">' + Math.round(dataStats[circles[i]]) + " people" + '</text>';
+
           }
 
             svg += "</svg>";
-//End of work sesh
+
             $(container).append(svg);
 
             L.DomEvent.disableClickPropagation(container);
@@ -286,3 +292,17 @@ function getData(map){
 };
 
 $(document).ready(createMap);
+
+
+
+
+//var circleString = `<circle class="legend-circle" id="${circles[i]}" fill="#fff" fill-opacity="0.8" stroke="#000" cx="30" cy="${cy}"`;
+
+//       'cx="30" cy="50"/>'
+//
+//       'cx=30 cy="' + cy + '"/>'
+//
+//       `cx="30" cy="${cy}"`
+//       var dogName = "Blaze";
+//       var alertText = "My dog's name is " + dogName " and I like him a lot.";
+//       var secondWay = `My dog's name is ${10/2} and I like him a lot`;
