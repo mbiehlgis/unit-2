@@ -246,6 +246,7 @@ input[type="range"]::-moz-range-track {
 /* -------- Pop-ups Style -------- */
 
 .leaflet-popup-content-wrapper {
+  /* background: #FF69B4; */
   background: #FF69B4;
   box-shadow: 0 3px 14px rgba(0,0,0,0.4);
   border: white;
