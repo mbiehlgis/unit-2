@@ -276,13 +276,13 @@ input[type="range"]::-moz-range-track {
   float: left;
   padding-left: 20px;
   font-size: 11px;
-  color: white !important;
+  fill: white !important;
 }
 
 #max-text,
 #mean-text,
 #min-text {
-  color: white !important;
+  fill: white !important;
 }
 
                   /* ------ Zoom ------ */

@@ -278,7 +278,7 @@ function createLegend(attributes){
 
                 var textY = i * 20 + 20;
 
-                svg += '<text id="' + circles[i] + '-text" color="white" x="65" y="' + textY + '">' + Math.round(dataStats[circles[i]]) + " people" + '</text>';
+                svg += '<text id="' + circles[i] + '-text" fill="white" x="65" y="' + textY + '">' + Math.round(dataStats[circles[i]]) + " people" + '</text>';
 
           }
 
@@ -320,7 +320,7 @@ function processData(data){
 
 //function to retrieve the data from geojson
 function getData(map){
-  
+
     //load the data and call other functions
     $.getJSON("data/JapanPop.geojson", function(response){
 
