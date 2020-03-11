@@ -320,6 +320,7 @@ function processData(data){
 
 //function to retrieve the data from geojson
 function getData(map){
+  
     //load the data and call other functions
     $.getJSON("data/JapanPop.geojson", function(response){
 
