@@ -14,24 +14,25 @@ function createMap(){
     });
 
                                           //Potential Dark Mode Map//
-    // L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
-    // 	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-    // 	subdomains: 'abcd',
-    // 	maxZoom: 30
-    // }).addTo(map);
-    // map.zoomControl.setPosition('bottomright');
-    // getData();
-
-    L.tileLayer('https://{s}.tile.openstreetmap.se/hydda/base/{z}/{x}/{y}.png', {
-	    maxZoom: 30,
-	    attribution: 'Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+    	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    	subdomains: 'abcd',
+    	maxZoom: 30
     }).addTo(map);
-
-    //adds zoom controls to map and sets it position, I set to be in the top right but added padding for it to be in the bottom left but above my legend
-    map.zoomControl.setPosition('topright');
-
-    //calls get data function
+    map.zoomControl.setPosition('bottomright');
     getData();
+
+
+    // L.tileLayer('https://{s}.tile.openstreetmap.se/hydda/base/{z}/{x}/{y}.png', {
+	  //   maxZoom: 30,
+	  //   attribution: 'Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    // }).addTo(map);
+    //
+    // //adds zoom controls to map and sets it position, I set to be in the top right but added padding for it to be in the bottom left but above my legend
+    // map.zoomControl.setPosition('topright');
+    //
+    // //calls get data function
+    // getData();
 };
 
 
